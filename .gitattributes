@@ -1,0 +1,49 @@
+# Unity Project .gitattributes Template
+
+# 设置所有文本文件自动处理换行符
+* text=auto
+
+# 强制某些文件类型使用LF换行符（推荐用于脚本和配置文件）
+*.cs text eol=lf
+*.json text eol=lf
+*.meta text eol=lf
+*.txt text eol=lf
+*.yaml text eol=lf
+*.shader text eol=lf
+*.compute text eol=lf
+*.cginc text eol=lf
+*.hlsl text eol=lf
+
+# 将特定文件标记为二进制文件（避免Git尝试修改它们）
+*.asset binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.tga binary
+*.psd binary
+*.fbx binary
+*.wav binary
+*.mp3 binary
+*.ogg binary
+*.unity binary
+*.prefab binary
+*.mat binary
+*.anim binary
+*.controller binary
+*.asset binary
+
+# Unity特定文件
+*.unity text eol=lf
+*.prefab text eol=lf
+*.anim text eol=lf
+*.controller text eol=lf
+
+# 忽略换行符转换的文件
+.gitignore text eol=lf
+.gitattributes text eol=lf
+
+# 防止某些文件被错误地识别为二进制文件
+*.asmdef text eol=lf
+*.asmref text eol=lf
+*.rsp text eol=lf
