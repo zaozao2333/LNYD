@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Hero
+  - GroundEnemy
+  - SkyEnemy
   layers:
   - Default
   - TransparentFX

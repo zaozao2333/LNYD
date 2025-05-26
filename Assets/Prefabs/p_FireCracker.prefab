@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 4389052445914205620}
   - component: {fileID: 4790569888587597798}
   - component: {fileID: 4733192490085942962}
-  - component: {fileID: -8207793580745674734}
+  - component: {fileID: 6070164462191350702}
+  - component: {fileID: 9075251391502337463}
   m_Layer: 0
   m_Name: p_FireCracker
   m_TagString: Untagged
@@ -135,7 +136,7 @@ MonoBehaviour:
   offLeft: 0
   offUp: 0
   offDown: 0
---- !u!114 &-8207793580745674734
+--- !u!114 &6070164462191350702
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -144,6 +145,53 @@ MonoBehaviour:
   m_GameObject: {fileID: 7715426516080673226}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0df19de335ce40449a44277a22030b03, type: 3}
+  m_Script: {fileID: 11500000, guid: 9faecc2f2b372c042b8e92b48b635ca2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage: 10
+  enemyTag: GroundEnemy
+--- !u!61 &9075251391502337463
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7715426516080673226}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0

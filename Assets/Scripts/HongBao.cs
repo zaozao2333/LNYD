@@ -6,9 +6,15 @@ public class HongBao : MonoBehaviour
 {
     BoundsCheck boundsCheck;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         boundsCheck = GetComponent<BoundsCheck>();
+
+        Collider2D objectCollider = GetComponent<Collider2D>();
+        Collider2D firstGroundCollider = GameObject.Find("Ground/Ground_1").GetComponent<Collider2D>();
+        print(firstGroundCollider);
+        Physics2D.IgnoreCollision(objectCollider, firstGroundCollider, true);
+
     }
 
     // Update is called once per frame

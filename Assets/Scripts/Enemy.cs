@@ -1,6 +1,6 @@
 using UnityEngine;
-
-public class EnemyAI : MonoBehaviour
+using System.Collections;
+public class Enemy : MonoBehaviour
 {
     // 状态枚举
     public enum AIState
@@ -10,6 +10,7 @@ public class EnemyAI : MonoBehaviour
     }
 
     [Header("Settings")]
+    public float health = 10f;
     public float patrolSpeed = 6f;  // 巡逻速度略低于Hero的8f
     public float chaseSpeed = 8f;   // 追击速度与Hero相同
     public float attackRange = 1.5f;
@@ -24,11 +25,18 @@ public class EnemyAI : MonoBehaviour
     private Transform player;
     private int currentPatrolIndex = 0;
     private bool isFacingRight = true;
+    private SpriteRenderer sr; // 新增变量：精灵渲染器
+    private Color originalColor; // 存储原始颜色
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         player = GameObject.FindGameObjectWithTag("Hero").transform;
+        sr = GetComponentInChildren<SpriteRenderer>(); // 获取SpriteRenderer组件
+        if (sr != null)
+        {
+            originalColor = sr.color; // 存储原始颜色
+        }
 
         // 初始状态为移动（巡逻）
         currentState = AIState.Move;
@@ -134,6 +142,29 @@ public class EnemyAI : MonoBehaviour
 
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, attackRange);
+    }
+
+    public void TakeDamage(float damage)
+    {
+        health -= damage;
+        if (health <= 0)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            StartCoroutine(FlashRed()); // 受到伤害但未死亡时触发闪烁效果
+        }
+    }
+
+    private IEnumerator FlashRed()
+    {
+        if (sr != null)
+        {
+            sr.color = Color.red; // 变为红色
+            yield return new WaitForSeconds(0.2f); // 等待0.2秒
+            sr.color = originalColor; // 恢复原始颜色
+        }
     }
 }
 

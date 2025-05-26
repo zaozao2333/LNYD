@@ -31,11 +31,11 @@ public class Weapon : MonoBehaviour
         switch (type)
         {
             case WeaponType.SkyLanternGun:
-                rb.velocity = (Vector2)transform.up * bulletSpeed + transform.root.GetComponent<Rigidbody2D>().velocity;
+                rb.velocity = (Vector2)transform.up * bulletSpeed + transform.root.GetComponent<Rigidbody2D>().velocity * 0.2f;
                 break;
             case WeaponType.FirecrackerRepeater:
             case WeaponType.HongbaoBomb:
-                rb.velocity = (Vector2)transform.right * bulletSpeed * Mathf.Sign(transform.root.localScale.x) + transform.root.GetComponent<Rigidbody2D>().velocity; ;
+                rb.velocity = (Vector2)transform.right * bulletSpeed * Mathf.Sign(transform.root.localScale.x) + transform.root.GetComponent<Rigidbody2D>().velocity * 0.5f ;
                 break;
         }
     }
