@@ -9,7 +9,7 @@ public class Hero : MonoBehaviour
 
     [Header("Jump")]
     public float jumpForce = 12f;
-    public float jumpTimeThreshold = 0.2f;
+    public float jumpTimeThreshold = 0.1f;
     public float fallMultiplier = 2.5f;
     public float lowJumpMultiplier = 2f;
     public LayerMask groundLayer;
@@ -134,6 +134,7 @@ public class Hero : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        if(!isGrounded) return;
         Gizmos.color = Color.red; // 设置颜色
         Gizmos.DrawWireSphere(groundCheck.position, 0.2f); // 绘制半径为0.2f的圆形
     }
