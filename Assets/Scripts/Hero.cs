@@ -13,10 +13,11 @@ public class Hero : MonoBehaviour
     public float fallMultiplier = 2.5f;
     public float lowJumpMultiplier = 2f;
     public LayerMask groundLayer;
+    public bool canJump = true;
 
     private Rigidbody2D rb;
     private Transform groundCheck;
-    private bool isGrounded;
+    public bool isGrounded;
     private float jumpTimeCounter;
     private bool isJumping;
     private float horizontalInput;
@@ -39,7 +40,7 @@ public class Hero : MonoBehaviour
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
 
         // Ã¯‘æ ‰»ÎºÏ≤‚
-        if (Input.GetButtonDown("Jump") && isGrounded)
+        if (Input.GetButtonDown("Jump") && isGrounded && canJump)
         {
             isJumping = true;
             jumpTimeCounter = jumpTimeThreshold;

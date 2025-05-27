@@ -16,6 +16,7 @@ public class Enemy : MonoBehaviour
     public float attackRange = 1.5f;
     public float detectionRange = 5f;
     public Transform[] patrolPoints;
+    public string patrolPointsParentName = "PatrolPoints"; // 巡逻点父对象名称
 
     [Header("Debug")]
     public AIState currentState = AIState.Move;
@@ -40,6 +41,19 @@ public class Enemy : MonoBehaviour
 
         // 初始状态为移动（巡逻）
         currentState = AIState.Move;
+
+        // 通过名称查找巡逻点父对象
+        GameObject patrolParent = GameObject.Find(patrolPointsParentName);
+        if (patrolParent != null)
+        {
+            // 获取所有子对象作为巡逻点
+            patrolPoints = new Transform[patrolParent.transform.childCount];
+            for (int i = 0; i < patrolParent.transform.childCount; i++)
+            {
+                patrolPoints[i] = patrolParent.transform.GetChild(i);
+            }
+        }
+
         if (patrolPoints.Length > 0)
         {
             currentTarget = patrolPoints[0];
@@ -64,7 +78,7 @@ public class Enemy : MonoBehaviour
         CheckStateTransitions();
     }
 
-    void HandleMoveState()
+    protected virtual void HandleMoveState()
     {
         // 巡逻逻辑
         if (patrolPoints.Length > 0)

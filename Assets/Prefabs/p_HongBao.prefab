@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: -1964510626401851182}
   - component: {fileID: 1092294015742826617}
   - component: {fileID: -582387437597267794}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: p_HongBao
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -114,7 +114,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!114 &-1964510626401851182
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -127,8 +127,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c4b8d5d93c61d44f8368d56d31f4fad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 0
-  keepOnScreen: 0
+  radius: 0.25
+  keepOnScreen: 1
   isOnScreen: 1
   camWidth: 0
   camHeight: 0
@@ -193,3 +193,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 908291847015a5744b0724edc9b01fc4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  explosionRadius: 2
+  explosionDamage: 10
+  enemyTag: UnderGroundEnemy
+  explosionEffect: {fileID: 0}
