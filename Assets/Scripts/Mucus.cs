@@ -46,7 +46,6 @@ public class Mucus : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D other)
     {
-        print(other.transform.root.tag);
         Hero hero = other.transform.root.GetComponent<Hero>();
         if (hero != null)
         {

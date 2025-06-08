@@ -15,12 +15,13 @@ public class HongBao : MonoBehaviour
     public float explosionRadius = 5f;
     public int explosionDamage = 50;
     public string enemyTag = "UnderGroundEnemy";
-    public GameObject explosionEffect;
+    public Animator animator;
 
     void Awake()
     {
         boundsCheck = GetComponent<BoundsCheck>();
         rend = GetComponent<Renderer>();
+        animator = GetComponentInChildren<Animator>();
         if (rend != null)
         {
             originalColor = rend.material.color;
@@ -70,10 +71,10 @@ public class HongBao : MonoBehaviour
 
     void Explode()
     {
-        // 创建爆炸特效
-        if (explosionEffect != null)
+        // 播放爆炸动画
+        if (animator != null)
         {
-            Instantiate(explosionEffect, transform.position, transform.rotation);
+            animator.SetTrigger("Explode");
         }
 
         // 对范围内的敌人造成伤害
@@ -86,7 +87,7 @@ public class HongBao : MonoBehaviour
             }
         }
 
-        Destroy(gameObject);
+        Destroy(gameObject, animator.GetCurrentAnimatorStateInfo(0).length);
     }
 
     void OnDrawGizmosSelected()

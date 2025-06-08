@@ -26,11 +26,14 @@ public class Hero : MonoBehaviour
     public Weapon[] weapons;
     private int currentWeaponIndex = 0;
 
+    [Header("Animation")]
+    public Animator animator; // 添加Animator组件的引用
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         groundCheck = transform.Find("GroundCheck");
-
+        animator = GetComponentInChildren<Animator>();
         SwitchWeapon(0);
     }
 
@@ -77,6 +80,12 @@ public class Hero : MonoBehaviour
         }
 
         horizontalInput = Input.GetAxisRaw("Horizontal");
+
+        // 更新动画参数
+        if (animator != null)
+        {
+            animator.SetBool("isMoving", Mathf.Abs(horizontalInput) > 0.1f);
+        }
 
         // 武器切换
         if (Input.GetKeyDown(KeyCode.Alpha1))

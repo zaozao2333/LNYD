@@ -9,11 +9,18 @@ public class SkyLantern : MonoBehaviour
     [SerializeField] private string enemyTag = "SkyEnemy"; // 可配置的目标tag
     [SerializeField] private float damageInterval = 0.5f; // 伤害间隔时间
 
-    private HashSet<Enemy> damagedEnemies = new HashSet<Enemy>(); // 记录正在受到持续伤害的敌人
+    [SerializeField] private float swingSpeed = 1.0f; // 摆动速度
+    [SerializeField] private float swingAmount = 0.5f; // 摆动幅度
 
-    void Start()
+    private HashSet<Enemy> damagedEnemies = new HashSet<Enemy>();
+    private Vector3 initialPosition; // 初始位置
+    private float spawnTime; // 记录生成时间
+
+    void Awake()
     {
         boundsCheck = GetComponent<BoundsCheck>();
+        initialPosition = transform.position;
+        spawnTime = Time.time; // 初始化独立计时器
     }
 
     void Update()
@@ -22,6 +29,14 @@ public class SkyLantern : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        // 正弦曲线摆动效果
+        float swingOffset = Mathf.Sin((Time.time - spawnTime) * swingSpeed) * swingAmount;
+        transform.position = new Vector3(
+            initialPosition.x + swingOffset, // 始终基于initialPosition.x
+            transform.position.y,            // 保持原有y轴（上升逻辑）
+            transform.position.z             // 保持原有z轴
+        );
     }
 
     void OnTriggerEnter2D(Collider2D other)

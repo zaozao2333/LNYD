@@ -22,10 +22,11 @@ public class Enemy : MonoBehaviour
     public AIState currentState = AIState.Move;
     public Transform currentTarget;
 
-    private Rigidbody2D rb;
-    private Transform player;
+    protected Rigidbody2D rb;
+    protected Transform player;
     private int currentPatrolIndex = 0;
-    private bool isFacingRight = true;
+    private bool isFacingRight;
+    protected bool isAttacking = false;
     private SpriteRenderer sr; // 新增变量：精灵渲染器
     private Color originalColor; // 存储原始颜色
 
@@ -57,6 +58,9 @@ public class Enemy : MonoBehaviour
         if (patrolPoints.Length > 0)
         {
             currentTarget = patrolPoints[0];
+            isFacingRight = patrolPoints[0].position.x - transform.position.x > 0;
+            if(!isFacingRight)
+                transform.Rotate(0, 180, 0);
         }
     }
 
@@ -87,6 +91,16 @@ public class Enemy : MonoBehaviour
             float targetSpeed = (currentTarget == player) ? chaseSpeed : patrolSpeed;
             rb.velocity = new Vector2(direction.x * targetSpeed, rb.velocity.y);
 
+            // 新增：追击玩家时实时检测朝向
+            if (currentTarget == player)
+            {
+                bool shouldFaceRight = direction.x > 0;
+                if (shouldFaceRight != isFacingRight)
+                {
+                    Flip();
+                }
+            }
+
             // 到达巡逻点后切换下一个点
             if (Vector2.Distance(transform.position, currentTarget.position) < 0.5f)
             {
@@ -97,7 +111,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    void HandleAttackState()
+    virtual protected void HandleAttackState()
     {
         // 停止移动进行攻击
         rb.velocity = Vector2.zero;
@@ -105,13 +119,13 @@ public class Enemy : MonoBehaviour
         // 实际攻击逻辑（示例：简单伤害计算）
         if (Vector2.Distance(transform.position, player.position) <= attackRange)
         {
-            Debug.Log("Enemy attacking player!");
             // 这里添加实际攻击逻辑，如调用玩家的受伤方法
         }
     }
 
     void CheckStateTransitions()
     {
+        if (isAttacking) return;
         float distanceToPlayer = Vector2.Distance(transform.position, player.position);
 
         // 从移动切换到攻击的条件
@@ -122,7 +136,7 @@ public class Enemy : MonoBehaviour
         }
 
         // 从攻击切换回移动的条件
-        if (currentState == AIState.Attack && distanceToPlayer > attackRange)
+        if (currentState == AIState.Attack && distanceToPlayer > attackRange && !isAttacking)
         {
             currentState = AIState.Move;
         }
@@ -132,6 +146,11 @@ public class Enemy : MonoBehaviour
         {
             currentState = AIState.Move;
             currentTarget = patrolPoints[currentPatrolIndex];
+            bool shouldFaceRight = currentTarget.transform.position.x - transform.position.x > 0;
+            if (shouldFaceRight != isFacingRight)
+            {
+                Flip();
+            }
         }
         else if (currentState == AIState.Move && distanceToPlayer <= detectionRange && distanceToPlayer > attackRange)
         {
@@ -143,9 +162,7 @@ public class Enemy : MonoBehaviour
     {
         // 根据移动方向翻转精灵
         isFacingRight = !isFacingRight;
-        Vector3 scale = transform.localScale;
-        scale.x *= -1;
-        transform.localScale = scale;
+        transform.Rotate(0, 180, 0);
     }
 
     // 可视化检测范围（仅在编辑器中显示）
