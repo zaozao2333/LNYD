@@ -1,50 +1,31 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Collections;
 
 public class Mucus : MonoBehaviour
 {
-    [Header("Debuff Settings")]
-    public float speedReduction = 0.5f; // 移动速度减少比例（0.5表示减半）
-    public bool disableJump = true;    // 是否禁用跳跃
-    public float disappearTime = 3f;  // 3秒后消失
+    // 静态字典跟踪每个Hero的减速效果计数
+    private static Dictionary<Hero, int> heroDebuffCount = new Dictionary<Hero, int>();
+    // 静态字典保存Hero的原始属性（避免多次保存）
+    private static Dictionary<Hero, (float moveSpeed, float acceleration, float airControl, bool canJump)> heroOriginalValues = new Dictionary<Hero, (float, float, float, bool)>();
 
-    // 新增：存储原始值
-    private Dictionary<Hero, (float moveSpeed, float acceleration, float airControl, bool canJump)> originalValues = new();
+    [Header("Debuff Settings")]
+    public float speedReduction = 0.5f;
+    public bool disableJump = true;
+    public float disappearTime = 3f;
 
     private void Start()
     {
-        // 启动协程，3秒后销毁自身
         StartCoroutine(DestroyAfterTime());
     }
 
     IEnumerator DestroyAfterTime()
     {
         yield return new WaitForSeconds(disappearTime);
-
-        // 在销毁前恢复所有英雄的原始属性
-        foreach (var heroEntry in originalValues)
-        {
-            Hero hero = heroEntry.Key;
-            var values = heroEntry.Value;
-            hero.moveSpeed = values.moveSpeed;
-            hero.acceleration = values.acceleration;
-            hero.airControl = values.airControl;
-        }
-
         Destroy(gameObject);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
-    {
-        Hero hero = other.transform.root.GetComponent<Hero>();
-        if (hero != null)
-        {
-            ApplyDebuff(hero);
-        }
-    }
-
-    private void OnTriggerStay2D(Collider2D other)
     {
         Hero hero = other.transform.root.GetComponent<Hero>();
         if (hero != null)
@@ -64,30 +45,54 @@ public class Mucus : MonoBehaviour
 
     private void ApplyDebuff(Hero hero)
     {
-        // 首次触发时保存原始值
-        if (!originalValues.ContainsKey(hero))
+        // 初始化计数
+        if (!heroDebuffCount.ContainsKey(hero))
         {
-            originalValues[hero] = (hero.moveSpeed, hero.acceleration, hero.airControl, hero.canJump);
+            heroDebuffCount[hero] = 0;
+            // 仅第一次保存原始值
+            heroOriginalValues[hero] = (hero.moveSpeed, hero.acceleration, hero.airControl, hero.canJump);
         }
 
-        // 应用减速
-        hero.moveSpeed = originalValues[hero].moveSpeed * speedReduction;
-        hero.acceleration = originalValues[hero].acceleration * speedReduction;
-        hero.airControl = originalValues[hero].airControl * speedReduction;
-
-        if (disableJump) hero.canJump = false;
+        heroDebuffCount[hero]++;
+        UpdateDebuff(hero); // 更新减速效果
     }
 
     private void RemoveDebuff(Hero hero)
     {
-        if (originalValues.TryGetValue(hero, out var values))
+        if (heroDebuffCount.ContainsKey(hero))
         {
-            // 恢复原始值
-            hero.moveSpeed = values.moveSpeed;
-            hero.acceleration = values.acceleration;
-            hero.airControl = values.airControl;
-            hero.canJump = values.canJump; // 恢复跳跃能力
-            originalValues.Remove(hero);
+            heroDebuffCount[hero]--;
+            if (heroDebuffCount[hero] <= 0)
+            {
+                // 无减速效果时恢复原始属性
+                var original = heroOriginalValues[hero];
+                hero.moveSpeed = original.moveSpeed;
+                hero.acceleration = original.acceleration;
+                hero.airControl = original.airControl;
+                hero.canJump = original.canJump;
+
+                // 清理字典
+                heroDebuffCount.Remove(hero);
+                heroOriginalValues.Remove(hero);
+            }
+            else
+            {
+                UpdateDebuff(hero); // 更新剩余减速效果
+            }
         }
+    }
+
+    // 计算当前减速效果（支持多个Mucus叠加）
+    private void UpdateDebuff(Hero hero)
+    {
+        if (!heroOriginalValues.ContainsKey(hero)) return;
+
+        var original = heroOriginalValues[hero];
+        float totalSpeedReduction = Mathf.Pow(speedReduction, heroDebuffCount[hero]);
+
+        hero.moveSpeed = original.moveSpeed * totalSpeedReduction;
+        hero.acceleration = original.acceleration * totalSpeedReduction;
+        hero.airControl = original.airControl * totalSpeedReduction;
+        hero.canJump = !disableJump || (heroDebuffCount[hero] == 0); // 任一Mucus禁用跳跃则生效
     }
 }

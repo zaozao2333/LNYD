@@ -8,6 +8,7 @@ TagManager:
   - GroundEnemy
   - SkyEnemy
   - UnderGroundEnemy
+  - Ground
   layers:
   - Default
   - TransparentFX

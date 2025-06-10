@@ -30,7 +30,7 @@ public class Enemy : MonoBehaviour
     private SpriteRenderer sr; // 新增变量：精灵渲染器
     private Color originalColor; // 存储原始颜色
 
-    void Awake()
+    virtual protected void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         player = GameObject.FindGameObjectWithTag("Hero").transform;
@@ -123,7 +123,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    void CheckStateTransitions()
+    virtual protected void CheckStateTransitions()
     {
         if (isAttacking) return;
         float distanceToPlayer = Vector2.Distance(transform.position, player.position);

@@ -33,6 +33,7 @@ public class FlameProjectile : MonoBehaviour
         {
             // 这里应该调用玩家的受伤方法
             // 例如: other.GetComponent<PlayerHealth>().TakeDamage(damage);
+            other.GetComponent<Hero>().TakeDamage(damage);
             Destroy(gameObject);
         }
         // 如果碰到地面，销毁火焰

@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class Hero : MonoBehaviour
 {
@@ -15,12 +16,17 @@ public class Hero : MonoBehaviour
     public LayerMask groundLayer;
     public bool canJump = true;
 
+    [Header("Setting")]
+    public float health = 100f;
+
     private Rigidbody2D rb;
     private Transform groundCheck;
     public bool isGrounded;
     private float jumpTimeCounter;
     private bool isJumping;
     private float horizontalInput;
+    private SpriteRenderer sr; // 新增变量：精灵渲染器
+    private Color originalColor; // 存储原始颜色
 
     [Header("Weapons")]
     public Weapon[] weapons;
@@ -35,6 +41,12 @@ public class Hero : MonoBehaviour
         groundCheck = transform.Find("GroundCheck");
         animator = GetComponentInChildren<Animator>();
         SwitchWeapon(0);
+        Transform child = transform.Find("Animator");
+        sr = child.GetComponent<SpriteRenderer>(); // 获取SpriteRenderer组件
+        if (sr != null)
+        {
+            originalColor = sr.color; // 存储原始颜色
+        }
     }
 
     void Update()
@@ -147,6 +159,29 @@ public class Hero : MonoBehaviour
         if(!isGrounded) return;
         Gizmos.color = Color.red; // 设置颜色
         Gizmos.DrawWireSphere(groundCheck.position, 0.2f); // 绘制半径为0.2f的圆形
+    }
+
+    public void TakeDamage(float damage)
+    {
+        health -= damage;
+        if (health <= 0)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            StartCoroutine(FlashRed()); // 受到伤害但未死亡时触发闪烁效果
+        }
+    }
+
+    private IEnumerator FlashRed()
+    {
+        if (sr != null)
+        {
+            sr.color = Color.red; // 变为红色
+            yield return new WaitForSeconds(0.2f); // 等待0.2秒
+            sr.color = originalColor; // 恢复原始颜色
+        }
     }
 
 
