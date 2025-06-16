@@ -32,24 +32,24 @@ public class BoundsCheck : MonoBehaviour
         Vector3 pos = transform.position;
         isOnScreen = true;
         offRight = offLeft = offRight = offUp = false;
-        if (pos.x > camWidth - radius)
+        if (pos.x > Camera.main.transform.position.x + camWidth - radius)
         {
-            pos.x = camWidth - radius;
+            pos.x = Camera.main.transform.position.x + camWidth - radius;
             offRight = true;
         }
-        if (pos.x < -camWidth + radius)
+        if (pos.x < Camera.main.transform.position.x - camWidth + radius)
         {
-            pos.x = -camWidth + radius;
+            pos.x = Camera.main.transform.position.x  - camWidth + radius;
             offLeft = true;
         }
-        if (pos.y > camHeight - radius)
+        if (pos.y > Camera.main.transform.position.y + camHeight - radius)
         {
-            pos.y = camHeight - radius;
+            pos.y = Camera.main.transform.position.y + camHeight - radius;
             offUp = true;
         }
-        if (pos.y < -camHeight + radius)
+        if (pos.y < Camera.main.transform.position.y - camHeight + radius)
         {
-            pos.y = -camHeight + radius;
+            pos.y = Camera.main.transform.position.y - camHeight + radius;
             offDown = true;
         }
         isOnScreen = !(offRight || offLeft || offUp || offDown);
@@ -65,6 +65,6 @@ public class BoundsCheck : MonoBehaviour
     {
         if (!Application.isPlaying) return;
         Vector3 boundSize = new Vector3(camWidth * 2, camHeight * 2, 0.1f);
-        Gizmos.DrawWireCube(Vector3.zero, boundSize);
+        Gizmos.DrawWireCube(Camera.main.transform.position, boundSize);
     }
 }
