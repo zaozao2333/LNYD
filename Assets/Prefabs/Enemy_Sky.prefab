@@ -42,9 +42,9 @@ GameObject:
   - component: {fileID: 4432863155483548674}
   - component: {fileID: 1640960224078978838}
   - component: {fileID: 5126959590769524059}
-  - component: {fileID: 5220248192380519361}
   - component: {fileID: 1738187539953881520}
   - component: {fileID: 7704502171639337042}
+  - component: {fileID: 3926285729219035938}
   m_Layer: 10
   m_Name: Enemy_Sky
   m_TagString: SkyEnemy
@@ -140,27 +140,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 3, y: 3}
   m_EdgeRadius: 0
---- !u!114 &5220248192380519361
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3147603359085188988}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d56a3ac8257e68f4b84b2e539811d65d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  health: 15
-  patrolSpeed: 3
-  chaseSpeed: 4
-  attackRange: 5
-  detectionRange: 5.2
-  patrolPoints: []
-  patrolPointsParentName: SkyPoints
-  currentState: 0
-  currentTarget: {fileID: 0}
 --- !u!95 &1738187539953881520
 Animator:
   serializedVersion: 5
@@ -234,3 +213,29 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &3926285729219035938
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3147603359085188988}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a81de8678b719e4fa16498c1268b9b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 15
+  patrolSpeed: 6
+  chaseSpeed: 8
+  attackRange: 5.2
+  detectionRange: 5.5
+  patrolPoints: []
+  patrolPointsParentName: SkyPoints
+  currentState: 0
+  currentTarget: {fileID: 0}
+  flamePrefab: {fileID: 2958910084729148828, guid: 096f2d7ca8d0c8a4883f919b50b0fcaa, type: 3}
+  flameSpawnDelay: 1
+  flameFallSpeed: 5
+  flameDamage: 2
+  flameLifetime: 3

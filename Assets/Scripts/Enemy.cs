@@ -17,6 +17,7 @@ public class Enemy : MonoBehaviour
     public float detectionRange = 5f;
     public Transform[] patrolPoints;
     public string patrolPointsParentName = "PatrolPoints"; // 巡逻点父对象名称
+    public int score = 100;
 
     [Header("Debug")]
     public AIState currentState = AIState.Move;
@@ -181,6 +182,10 @@ public class Enemy : MonoBehaviour
         if (health <= 0)
         {
             Destroy(gameObject);
+            if (EnemySpawner.instance != null)
+            {
+                EnemySpawner.instance.AddScore(score);
+            }
         }
         else
         {

@@ -30,7 +30,7 @@ public class Hero : MonoBehaviour
 
     [Header("Weapons")]
     public Weapon[] weapons;
-    private int currentWeaponIndex = 0;
+    public int currentWeaponIndex = 0;
 
     [Header("Animation")]
     public Animator animator; // 添加Animator组件的引用
@@ -166,7 +166,7 @@ public class Hero : MonoBehaviour
         health -= damage;
         if (health <= 0)
         {
-            Destroy(gameObject);
+            
         }
         else
         {
