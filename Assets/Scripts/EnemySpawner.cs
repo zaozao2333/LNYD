@@ -34,7 +34,8 @@ public class EnemySpawner : MonoBehaviour
 
     [Header("Game Over")]
     public GameObject gameOverPanel;
-    public Text finalScoreText;
+    public TextMeshProUGUI finalScoreText;
+    public TextMeshProUGUI panelText;
 
     private float timer;
     private Camera mainCamera;
@@ -42,6 +43,7 @@ public class EnemySpawner : MonoBehaviour
 
     void Start()
     {
+        gameOverPanel.SetActive(false);
         mainCamera = Camera.main;
         timer = spawnInterval; // 立即生成第一个敌人
         instance = this;
@@ -133,14 +135,16 @@ public class EnemySpawner : MonoBehaviour
     // 保存最高分
     private void SaveHighScore()
     {
-        PlayerPrefs.SetInt("HighScore", highScore);
+        string highScoreText = SceneManager.GetActiveScene().name + "_HighScore";
+        PlayerPrefs.SetInt(highScoreText, highScore);
         PlayerPrefs.Save();
     }
 
     // 加载最高分
     private void LoadHighScore()
     {
-        highScore = PlayerPrefs.GetInt("HighScore", 0);
+        string highScoreText = SceneManager.GetActiveScene().name + "_HighScore";
+        highScore = PlayerPrefs.GetInt(highScoreText, 0);
     }
 
     // 游戏结束
@@ -160,7 +164,21 @@ public class EnemySpawner : MonoBehaviour
     // 重新开始游戏（需要附加到UI按钮）
     public void RestartGame()
     {
+        gameOverPanel.SetActive(false);
         Time.timeScale = 1;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void NextLevel()
+    {
+        switch (SceneManager.GetActiveScene().name)
+        {
+            case "Scene_0":
+                SceneManager.LoadScene("Scene_1");
+                break;
+            case "Scene_1":
+                SceneManager.LoadScene("Scene_2");
+                break;
+        }
     }
 }

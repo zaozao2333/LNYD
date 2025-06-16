@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UnderGroundEnemy : Enemy
 {
@@ -33,6 +34,14 @@ public class UnderGroundEnemy : Enemy
                 Vector2 shootDirection = Vector2.up;
                 bulletRb.velocity = shootDirection * bulletSpeed;
             }
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (SceneManager.GetActiveScene().name.CompareTo("Scene_0") == 0)
+        {
+            EnemySpawner.instance.NextLevel();
         }
     }
 }

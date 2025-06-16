@@ -16,7 +16,7 @@ public class Bullet : MonoBehaviour
     {
         if (boundsCheck != null)
         {
-            if (!boundsCheck.isOnScreen && !boundsCheck.keepOnScreen)
+            if (!boundsCheck.isOnScreen)
             {
                 Destroy(gameObject);
             }
@@ -30,6 +30,10 @@ public class Bullet : MonoBehaviour
         {
             Enemy enemy = root.GetComponent<Enemy>();
             if (enemy != null) enemy.TakeDamage(damage);
+            Destroy(gameObject);
+        }
+        else
+        {
             Destroy(gameObject);
         }
     }

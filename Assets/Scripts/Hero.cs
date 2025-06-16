@@ -166,7 +166,7 @@ public class Hero : MonoBehaviour
         health -= damage;
         if (health <= 0)
         {
-            
+            EnemySpawner.instance.GameOver();
         }
         else
         {
