@@ -67,9 +67,11 @@ public class Weapon : MonoBehaviour
         switch (type)
         {
             case WeaponType.SkyLanternGun:
+                AudioManager.PlayOneShotStatic("Lantern");
                 rb.velocity = (Vector2)transform.up * bulletSpeed + transform.root.GetComponent<Rigidbody2D>().velocity * 0.2f;
                 break;
             case WeaponType.FirecrackerRepeater:
+                AudioManager.Play("Firework");
                 bullet.transform.right = transform.right * Mathf.Sign(transform.root.localScale.x);
                 rb.velocity = (Vector2)transform.right * bulletSpeed * Mathf.Sign(transform.root.localScale.x) + transform.root.GetComponent<Rigidbody2D>().velocity * 0.5f;
                 break;

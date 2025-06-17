@@ -41,7 +41,8 @@ public class UnderGroundEnemy : Enemy
     {
         if (SceneManager.GetActiveScene().name.CompareTo("Scene_0") == 0)
         {
-            EnemySpawner.instance.NextLevel();
+            if(EnemySpawner.instance != null) 
+            EnemySpawner.instance.GameOver();
         }
     }
 }

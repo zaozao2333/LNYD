@@ -28,6 +28,7 @@ public class Bullet : MonoBehaviour
         GameObject root = collision.gameObject.transform.root.gameObject;
         if (root.CompareTag(enemyTag))
         {
+            AudioManager.Play("Explosion");
             Enemy enemy = root.GetComponent<Enemy>();
             if (enemy != null) enemy.TakeDamage(damage);
             Destroy(gameObject);

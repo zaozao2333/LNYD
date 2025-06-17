@@ -71,6 +71,7 @@ public class HongBao : MonoBehaviour
 
     void Explode()
     {
+        AudioManager.PlayOneShotStatic("Explosion");
         // ²¥·Å±¬Õ¨¶¯»­
         if (animator != null)
         {

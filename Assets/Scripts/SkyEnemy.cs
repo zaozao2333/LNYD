@@ -38,6 +38,7 @@ public class SkyEnemy : Enemy
 
     private void SpawnFlame()
     {
+        AudioManager.PlayOneShotStatic("Fire");
         if (flamePrefab != null)
         {
             // 在敌人上方生成火焰

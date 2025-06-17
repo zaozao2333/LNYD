@@ -163,6 +163,7 @@ public class Hero : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
+        AudioManager.PlayOneShotStatic("Hit");
         health -= damage;
         if (health <= 0)
         {

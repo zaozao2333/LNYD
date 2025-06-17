@@ -36,6 +36,8 @@ public class EnemySpawner : MonoBehaviour
     public GameObject gameOverPanel;
     public TextMeshProUGUI finalScoreText;
     public TextMeshProUGUI panelText;
+    public Button restartBtn;
+    public GameObject nextLevelBtn;
 
     private float timer;
     private Camera mainCamera;
@@ -45,10 +47,13 @@ public class EnemySpawner : MonoBehaviour
     {
         gameOverPanel.SetActive(false);
         mainCamera = Camera.main;
-        timer = spawnInterval; // 立即生成第一个敌人
+        timer = 0f; 
         instance = this;
         LoadHighScore();
         UpdateScoreUI();
+        PlayerPrefs.SetInt("Scene_0_TargetScore", 300);
+        PlayerPrefs.SetInt("Scene_1_TargetScore", 1000);
+        PlayerPrefs.SetInt("Scene_2_TargetScore", 5000);
     }
 
     void Update()
@@ -128,8 +133,8 @@ public class EnemySpawner : MonoBehaviour
     // 更新UI显示
     private void UpdateScoreUI()
     {
-        scoreText.text = "Score: " + currentScore;
-        highScoreText.text = "High Score: " + highScore;
+        scoreText.text = "当前分: " + currentScore;
+        highScoreText.text = "最高分: " + highScore;
     }
 
     // 保存最高分
@@ -152,7 +157,22 @@ public class EnemySpawner : MonoBehaviour
     {
         Time.timeScale = 0; // 暂停游戏
         gameOverPanel.SetActive(true);
-        finalScoreText.text = "Final Score: " + currentScore;
+        restartBtn.onClick.AddListener(RestartGame);
+        nextLevelBtn.GetComponent<Button>().onClick.AddListener(NextLevel);
+        nextLevelBtn.GetComponent<Button>().interactable = false;
+        string sceneName = SceneManager.GetActiveScene().name + "_TargetScore";
+        int targetScore = PlayerPrefs.GetInt(sceneName, 0);
+
+        panelText.text = "驱邪失败！\n目标分:" + targetScore;
+        if (currentScore >= targetScore)
+        {
+            panelText.text = "驱邪成功！";
+            nextLevelBtn.GetComponent<Button>().interactable = true;
+            if (SceneManager.GetActiveScene().name.CompareTo("Scene_2") == 0)
+                nextLevelBtn.SetActive(false);
+        }
+
+        finalScoreText.text = "当前分: " + currentScore;
 
         // 保存最高分（如果当前分数是新高）
         if (currentScore > highScore)
@@ -171,6 +191,7 @@ public class EnemySpawner : MonoBehaviour
 
     public void NextLevel()
     {
+        Time.timeScale = 1;
         switch (SceneManager.GetActiveScene().name)
         {
             case "Scene_0":
